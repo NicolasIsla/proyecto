@@ -137,3 +137,75 @@ class AutoEncoderV3(nn.Module):
         )
     def forward(self, x):
         return self.net(x)
+
+class AutoEncoderV4(nn.Module):
+    def __init__(
+        self,
+    ):
+        super().__init__()
+        self.encoder = nn.Sequential(
+            # Bloque 1
+            # [3x21x21]
+            nn.Conv2d(3, 16, kernel_size=3, padding="same"),
+            nn.ReLU(),
+            #[16, 21, 21]
+            nn.Conv2d(16, 16, kernel_size=3, padding="same"),
+            nn.ReLU(),
+            #[16, 21, 21]
+            nn.MaxPool2d(kernel_size=2),
+            #[16, 10, 10]
+
+            # Bloque 2
+            nn.Conv2d(16, 32, kernel_size=3, padding="same"),
+            nn.ReLU(),
+            #[32, 10, 10]
+            nn.Conv2d(32, 32, kernel_size=3, padding="same"),
+            nn.ReLU(),
+            #[32, 10, 10]
+            nn.MaxPool2d(kernel_size=2),
+            # [32, 5, 5]
+
+            # Bloque 3
+            nn.Conv2d(32, 64, kernel_size=3, padding="same"),
+            nn.ReLU(),
+            nn.MaxPool2d(kernel_size=2),
+            nn.Conv2d(64, 64, kernel_size=3, padding="same"),
+            nn.ReLU(),
+            nn.MaxPool2d(kernel_size=2),
+        )
+        self.decoder = nn.Sequential(
+            # BLoque 1
+            nn.ConvTranspose2d(64, 64, 2,stride=1),
+            nn.ReLU(),
+
+            # BLoque 2
+            nn.ConvTranspose2d(64, 32, 3,stride=2),
+            nn.ReLU(),
+            nn.ConvTranspose2d(32, 32, 1,stride=1),
+            nn.ReLU(),
+
+            # Bloque 3
+            nn.ConvTranspose2d(32, 16, 2,stride=2),
+            nn.ReLU(),
+            nn.ConvTranspose2d(16, 16, 1,stride=1),
+            nn.ReLU(),
+            # [1, 16, 10, 10]
+            # BLoque 4
+            nn.ConvTranspose2d(16, 8, 3,stride=2),
+            nn.ReLU(),
+
+            nn.ConvTranspose2d(8, 16, 1,stride=1),
+            nn.ReLU(),
+            # # Bloque 5
+            nn.ConvTranspose2d(16, 3, 1,stride=1),
+            nn.ReLU(),
+            nn.ConvTranspose2d(3, 3, 1,stride=1),
+            nn.ReLU(),
+        )
+        
+        self.net = nn.Sequential(
+            self.encoder,
+            self.decoder,
+        )
+    def forward(self, x):
+        return self.net(x)
