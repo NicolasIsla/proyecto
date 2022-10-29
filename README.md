@@ -1,2 +1,2 @@
 # proyecto
-Proyecto numeor 15 de inteligencia
+Proyecto numero 15 de inteligencia
