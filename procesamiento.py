@@ -1,6 +1,7 @@
 import numpy as np
 from torch.utils.data import TensorDataset, DataLoader
 import torch
+import matplotlib.pyplot as plt
 
 def recorte(data,dim=21):
     muestras,ancho,largo,canales=data.shape

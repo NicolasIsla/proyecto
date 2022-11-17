@@ -1,0 +1,12 @@
+{
+    "favorites.resources": [
+        {
+            "filePath": "arquitectura.py",
+            "group": "Default"
+        },
+        {
+            "filePath": "MLP.ipynb",
+            "group": "Default"
+        }
+    ]
+}
